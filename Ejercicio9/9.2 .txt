@@ -1,0 +1,71 @@
+9.2 
+
+1.Devuelve el nombre del departamento donde trabaja el empleado que tiene el nif 38382980M.
+
+select d.nombre as NombreDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+where e.nif = "38382980M";
+
+
+2.Devuelve el nombre del departamento donde trabaja el empleado JOSE RUIZ SANTANA.
+
+select d.nombre as NombreDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+where e.nombre= "jose" and e.apellido1 ="ruiz" and e.apellido2 = "santana";
+
+3.Devuelve un listado con el nombre de los empleados y el nombre del departamento donde trabaja cada uno.
+
+select e.nombre as NombreEmpleado, d.nombre as NombreDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo;
+
+4.Devuelve un listado con el nombre de los empleados y el nombre del departamento donde trabaja cada uno. Ordena el resultado, en primer lugar por el nombre del departamento (en orden alfabético) y en segundo lugar por los apellidos y el nombre de los empleados.
+
+select e.nombre as NombreEmpleado, d.nombre as NombreDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+order by d.nombre, e.apellido1;
+
+5.Devuelve un listado con el código y el nombre del departamento, de aquellos departamentos que tienen empleados.
+
+select distinct d.nombre as NombreDepartamento, d.codigo as CodigoDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo;
+
+6.Devuelve un listado con el código, el nombre del departamento y el valor del presupuesto actual del que dispone, solo de aquellos departamentos que tienen empleados. El valor del presupuesto actual se puede calcular restando al valor del presupuesto inicial (atributo presupuesto) el valor de los gastos que ha generado (atributo gastos).
+
+select distinct d.codigo as CodigoDepartamento, d.nombre asNombreDepartamento, (d.presupuesto - d.gastos) as PresupuestoActual
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo;
+
+7.Devuelve un listado con los datos de los empleados que trabajan en el departamento de I+D. Ordena el resultado alfabéticamente por apellidos y nombre.
+
+select e.nombre as NombreEmpledao, e.apellido1 as Apellido1Empleado, e.apellido2 as Apellido2Empleado
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+group by e.nombre, e.apellido1, e.apellido2;
+
+8.Devuelve un listado con los datos de los empleados que trabajan en el departamento de Sistemas, Contabilidad o I+D. Ordena el resultado alfabéticamente. 
+
+select e.nombre as NombreEmpledao, e.apellido1 as Apellido1Empleado, e.apellido2 as Apellido2Empleado
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+where d.nombre = 'Sistemas' or d.nombre = 'Contabilidad' or d.nombre = 'I+D'
+group by e.nombre, e.apellido1, e.apellido2;
+
+
+9.Devuelve una lista con el nombre de los empleados que tienen los departamentos que  tienen un presupuesto entre 100000 y 200000 euros.
+
+select e.nombre as NombreEmpledao
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+where d.presupuesto between 100000 and 200000;
+
+10.Devuelve un listado con el nombre de los departamentos donde existe algún empleado cuyo segundo apellido sea NULL. Hay que tener en cuenta que no se debe mostrar los nombres de departamentos que estén repetidos
+
+select distinct d.nombre as NombreDepartamento
+from empleado e 
+inner join departamento d on e.codigo_departamento = d.codigo
+where e.apellido2 is NULL;

@@ -1,0 +1,63 @@
+Tarea 9.3;
+
+1.Muestra los nombres de los artículos comprados por“cliente nueve”.
+
+SELECT a.nombre
+FROM facturas f
+JOIN clientes c ON f.codc = c.codc
+JOIN articulos a ON f.coda = a.coda
+WHERE c.nombre = 'cliente nueve';
+
+2.Muestra el nombre del artículo y el nombre del proveedor que lo suministra (con los alias, Nombre Artículo y Nombre Proveedor respectivamente), de los artículos que tengan un pvp superior a 500, ordenados  por nombre de artículo.
+
+SELECT a.nombre AS "Nombre Artículo", p.nombre AS "Nombre Proveedor"
+FROM articulos a
+JOIN suministros s ON a.coda = s.coda
+JOIN proveedores p ON s.codp = p.codp
+WHERE a.pvp > 500
+ORDER BY a.nombre;
+
+3.Muestra aquellos suministros que tengan un puc mayor a cualquiera de los que tiene el proveedor p11.
+
+SELECT *
+FROM suministros s1
+WHERE s1.puc > (SELECT MAX(s2.puc) FROM suministros s2 WHERE s2.codp = 'p11');
+
+4.Calcular cuánto se ha vendido por cada cliente,  reflejando el nombre del cliente y el importe de la venta con el alias total_cliente.
+
+SELECT c.nombre, SUM(f.precio * f.ctd) AS total_cliente
+FROM clientes c
+JOIN facturas f ON c.codc = f.codc
+GROUP BY c.nombre;
+
+5.Mostrar para cada artículo, el nombre del artículo y la cantidad total que se ha facturado de ese artículo (ctd de la tabla facturas).
+
+SELECT a.nombre, SUM(f.ctd) AS cantidad_total
+FROM articulos a
+JOIN facturas f ON a.coda = f.coda
+GROUP BY a.nombre;
+
+6.Muestra todos los artículos que no han sido comprados por ningún cliente, ordenados por código de nombre de artículo.
+
+SELECT a.nombre
+FROM articulos a
+LEFT JOIN facturas f ON a.coda = f.coda
+WHERE f.coda IS NULL
+ORDER BY a.nombre;
+
+7.Muestra el nombre del cliente y el nombre del artículo, de aquellos clientes que han comprado artículos suministrados por el proveedor p3
+
+SELECT c.nombre AS "Nombre Cliente", a.nombre AS "Nombre Artículo"
+FROM clientes c
+JOIN facturas f ON c.codc = f.codc
+JOIN articulos a ON f.coda = a.coda
+JOIN suministros s ON a.coda = s.coda
+WHERE s.codp = 'p3';
+
+8.Mostrar el nombre del proveedor y el nombre del artículo de los suministros comprados al "Proveedor tres“.
+
+SELECT p.nombre AS "Nombre Proveedor", a.nombre AS "Nombre Artículo"
+FROM proveedores p
+JOIN suministros s ON p.codp = s.codp
+JOIN articulos a ON s.coda = a.coda
+WHERE p.nombre = 'proveedor tres';
